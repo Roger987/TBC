@@ -1,5 +1,8 @@
 #include <temporalGraph.h>
 
+bool edge_cmp(const TemporalEdge& a, const TemporalEdge& b) {
+    return std::tie(a.time, a.source, a.target) < std::tie(b.time, b.source, b.target);
+}
 
 void build_temporal_graph(TemporalGraph* G, const std::vector<TemporalEdge>& edges) {
     
@@ -20,6 +23,17 @@ void build_temporal_graph(TemporalGraph* G, const std::vector<TemporalEdge>& edg
             it->neighbours.push_back(edge.target);
         }
 
+    }
+
+    for (int v = 0; v < G->num_nodes; ++v) {
+        auto& timeline = G->adj[v];
+        for (size_t i = 0; i < timeline.size(); ++i) {
+            if (i + 1 < timeline.size()) {
+                timeline[i].nextIndex = i + 1;
+            } else {
+                timeline[i].nextIndex = -1;
+            }
+        }
     }
 
 }
@@ -67,11 +81,11 @@ void read_temporal_graph(const std::string& filename, TemporalGraph* G, bool dir
 
 }
 
-void compute_scores(TemporalGraph* G) {
-    // Placeholder for score computation logic
-    // This function should be implemented based on the specific scoring algorithm required
-    std::cout << "Computing scores..." << std::endl;
-}
+// void compute_scores(TemporalGraph* G) {
+//     // Placeholder for score computation logic
+//     // This function should be implemented based on the specific scoring algorithm required
+//     std::cout << "Computing scores..." << std::endl;
+// }
 
 void free_temporal_graph(TemporalGraph* G) {
     G->adj.clear();

@@ -16,6 +16,7 @@ struct TemporalEdge {
 typedef struct {
     long long timestep;
     std::vector<int> neighbours;
+    int nextIndex;
 } AppearanceNeighbourhood;
 
 typedef struct {
@@ -27,11 +28,6 @@ typedef struct {
 
 void read_temporal_graph(const std::string& filename, TemporalGraph* G, bool directed);
 void build_temporal_graph(TemporalGraph* G, const std::vector<TemporalEdge>& edges);
-void compute_scores(TemporalGraph* G);
 void free_temporal_graph(TemporalGraph* G);
-
-bool edge_cmp(const TemporalEdge& a, const TemporalEdge& b) {
-    return std::tie(a.time, a.source, a.target) < std::tie(b.time, b.source, b.target);
-}
 
 #endif
